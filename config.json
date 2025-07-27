@@ -1,0 +1,107 @@
+{
+  "BOT_TOKEN": "",
+  "DISCORD_SERVER_ID": "1209122926968967178",
+  "STEAM_API_KEY": "",
+  "DEFAULT_EMBED_COLOR": "#ca6eff",
+  "LINK_EMBED_COLOR": "#47bcff",
+  "UNLINK_EMBED_COLOR": "#ff4747",
+
+  "BOT_STATUS": {
+      "Message": "{linkedPeople} linked!",
+      "Type (Listening, Watching, Playing)": "watching",
+      "Status (dnd, online, idle, offline)": "online"
+  },
+
+  "PERMISSIONS": {
+    "ALLOWED_TO_SEARCH_LINKS": [ "1110975188868288639"],
+    "ALLOWED_TO_USE_SYNC_DATA": [ "1110975188868288639" ]
+  },
+
+  "LINKING_OPTIONS": {
+      "ALLOW_DM_LINKING": true,
+      "FANCY_REPLIES": true,
+      "LINKING_CHANNEL": {
+          "ENABLED": true,
+          "CHANNEL_IDS": [ "1396557216634507326"],
+          "EMBED_OPTIONS": {
+              "title": "User Linked",
+              "description": "New User Linked",
+              "color": "#6ec0ff",
+              "fields": [
+                {
+                  "name": "HOW TO LINK - STEP 1",
+                  "value": "To link, please go in-game and type **/link** "
+                },
+                {
+                  "name": "HOW TO LINK - STEP 2",
+                  "value": "Press on the generate code button, and it will give you a six-character code."
+                },
+                {
+                  "name": "HOW TO LINK - STEP 3",
+                  "value": "Type that six-character code into this channel and you're good to go!"
+                }
+              ],
+              "thumbnail": {
+                "url": "https://norulesrust.com/images/Logo.png",
+                "height": 0,
+                "width": 0
+              },
+              "author": {
+                "name": "DISCORD LINK",
+                "icon_url": "https://norulesrust.com/images/Logo.png"
+              },
+              "footer": {
+                "text": "Discord Link",
+                "icon_url": "https://norulesrust.com/images/Logo.png"
+              }
+            }
+      }
+  },
+
+  "LINKED_ROLE(S)": [  "1396557622412574741" ],
+  "LINK_LOGS_CHANNEL": "1396557216634507326",
+  "UNLINK_LOGS_CHANNEL": "1396557216634507326",
+  "SYNC_STEAM_NAMES_TO_DISCORD": true,
+  "UPDATE_STEAM_INFO (Every x hours on player join)": "24",
+
+  "INFO": "For the commands, you can use the place holders {steamid} and {name}",
+  "SUCCESSFULLY_RAN_COMMANDS_WEBHOOK": "",
+  "COMMANDS_ON_LINK": [
+    {
+      "COMMAND": "giveto {steamid} wood 1000",
+      "ONLY_ON_FIRST_LINK": true
+    },
+    {
+      "COMMAND": "say <color=#78acff>{name}</color> has linked to Discord!",
+      "ONLY_ON_FIRST_LINK": true
+    }
+  ],
+
+  "COMMANDS_ON_UNLINK": [
+    "o.revoke user {steamid} kits.special"
+  ],
+
+  "SERVERS": [
+      {
+          "SERVER_ENABLED": true,
+          "SERVER_SHORTNAME": "tst-pve",
+          "SERVER_IP": "38.58.180.30",
+          "RCON_PORT": "28016",
+          "RCON_PASS": "57c7s"
+      }
+  ],
+
+  "LANG_MESSGAES": {
+    "InvalidCode": "The code that you provided is not valid or is expired",
+    "DatabaseErr": "There was an error while checking the database",
+    "SteamErr": "Error while checking steam profile",
+    "SuccessLink": "You have successfully linked to **[{0}]({1})**",
+    "AlreadyLinked": "You are already linked to **[{0}]({1})**",
+    "UnlinkingMsg": "Unlinking...",
+    "NoneProvided": "You did not select a steam 64ID or a discord user",
+    "IncorrectSteam": "The Steam 64ID you provided is incorrect",
+    "NoUser": "No user found in database",
+    "NoPermission": "You do not have permission to use this command",
+    "CommandErr": "There was an error while processing the command..."
+  }
+}
