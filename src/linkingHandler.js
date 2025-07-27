@@ -683,19 +683,32 @@ function SendUnlinkEmbed(dbInfo) {
 }
 
 function SendLinkEmbed(message, steamInfo, time) {
-    let fields = [
+    const channel = client.channels.cache.get(config.LINK_LOGS_CHANNEL);
+    if (!channel) return;
+
+    let embed = new discord.EmbedBuilder()
+        .setColor(config.LINK_EMBED_COLOR)
+        .setThumbnail(steamInfo.avatarfull)
+        .setDescription(`**Linked <t:${time}>**`)
+        .setFooter({ text: "Player Linked" })
+        .setTimestamp();
+
+    embed.addFields(
         { inline: true, name: `Discord ID`, value: `${message.author.id}` },
         { inline: true, name: `Discord User`, value: `<@${message.author.id}>` },
         { inline: true, name: `Discord Name`, value: `${message.author.username}` },
         { inline: true, name: `Steam ID`, value: `${steamInfo.steamid}` },
         { inline: true, name: `Steam Name`, value: `${steamInfo.personaname}` },
         { inline: true, name: `Steam Profile`, value: `[${steamInfo.personaname}](${steamInfo.profileurl})` }
-    ]
+    );
 
-    let body = { color: config.LINK_EMBED_COLOR, thumbnail: steamInfo.avatarfull, description: `**Linked <t:${time}>**`, fields: fields, footer: {text: "Player Linked"} };
-    FancyReply(message, body, config.LINK_LOGS_CHANNEL);
+    // Skicka meddelandet och ta bort efter 10 sekunder
+    channel.send({ embeds: [embed] }).then(msg => {
+        setTimeout(() => {
+            msg.delete().catch(console.error);
+        }, 10000); // 10 sekunder
+    });
 }
-
 async function GetSteamInfo(steamId) {
     return new Promise((resolve, reject) => {
         fetch(`https://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key=${config.STEAM_API_KEY}&steamids=${steamId}`).then(res => res.text()).then(steam => {
