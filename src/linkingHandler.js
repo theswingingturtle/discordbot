@@ -21,6 +21,8 @@ let _syncRolesArray = [];
 
 const BOT_TOKEN = process.env.BOT_TOKEN || config.BOT_TOKEN;
 const DISCORD_SERVER_ID = process.env.DISCORD_SERVER_ID || config.DISCORD_SERVER_ID;
+console.log("DEBUG BOT_TOKEN:", BOT_TOKEN ? "Loaded ✅" : "Missing ❌");
+console.log("DEBUG DISCORD_SERVER_ID:", DISCORD_SERVER_ID || "Missing ❌");
 const STEAM_API_KEY = process.env.STEAM_API_KEY || config.STEAM_API_KEY;
 const SERVER_IP = process.env.SERVER_IP || (config.SERVERS?.[0]?.SERVER_IP || null);
 const RCON_PORT = process.env.RCON_PORT || (config.SERVERS?.[0]?.RCON_PORT || null);
@@ -34,6 +36,7 @@ const client = new discord.Client({
     shards: "auto",
     partials: [discord.Partials.Message, discord.Partials.Channel, discord.Partials.User]
 });
+client.commands = new discord.Collection();
 const rest = new REST({ version: '10' }).setToken(BOT_TOKEN);
 
 //#region Command Handler
@@ -53,7 +56,7 @@ client.on('ready', async () => {
     setTimeout(async() => {
         try {
             await rest.put(
-                Routes.applicationGuildCommands(client.user.id, config.DISCORD_SERVER_ID),
+                Routes.applicationGuildCommands(client.user.id, DISCORD_SERVER_ID),
                 { body: commands },
             );
         } catch (error) {
