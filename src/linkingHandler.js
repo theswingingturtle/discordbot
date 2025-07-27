@@ -19,12 +19,22 @@ const _commandQueue = [];
 const commands = [];
 let _syncRolesArray = [];
 
-if(!config.BOT_TOKEN) return console.log("No bot token defined");
-if(!config.STEAM_API_KEY) return console.log("No steam api key defined");
+const BOT_TOKEN = process.env.BOT_TOKEN || config.BOT_TOKEN;
+const DISCORD_SERVER_ID = process.env.DISCORD_SERVER_ID || config.DISCORD_SERVER_ID;
+const STEAM_API_KEY = process.env.STEAM_API_KEY || config.STEAM_API_KEY;
+const SERVER_IP = process.env.SERVER_IP || (config.SERVERS?.[0]?.SERVER_IP || null);
+const RCON_PORT = process.env.RCON_PORT || (config.SERVERS?.[0]?.RCON_PORT || null);
+const RCON_PASS = process.env.RCON_PASS || (config.SERVERS?.[0]?.RCON_PASS || null);
 
-const client = new discord.Client({intents: [discord.GatewayIntentBits.Guilds, discord.GatewayIntentBits.GuildMembers, discord.GatewayIntentBits.GuildEmojisAndStickers, discord.GatewayIntentBits.GuildIntegrations, discord.GatewayIntentBits.GuildWebhooks, discord.GatewayIntentBits.GuildInvites, discord.GatewayIntentBits.GuildVoiceStates, discord.GatewayIntentBits.GuildPresences, discord.GatewayIntentBits.GuildMessages, discord.GatewayIntentBits.GuildMessageReactions, discord.GatewayIntentBits.GuildMessageTyping, discord.GatewayIntentBits.DirectMessages, discord.GatewayIntentBits.DirectMessageReactions, discord.GatewayIntentBits.DirectMessageTyping, discord.GatewayIntentBits.MessageContent], shards: "auto", partials: [discord.Partials.Message, discord.Partials.Channel, discord.Partials.GuildMember, discord.Partials.Reaction, discord.Partials.GuildScheduledEvent, discord.Partials.User, discord.Partials.ThreadMember]});
-client.commands = new discord.Collection();
-const rest = new REST({ version: '10' }).setToken(config.BOT_TOKEN);
+if (!BOT_TOKEN) return console.log("No bot token defined");
+if (!STEAM_API_KEY) return console.log("No steam api key defined");
+
+const client = new discord.Client({
+    intents: [discord.GatewayIntentBits.Guilds, discord.GatewayIntentBits.GuildMembers, discord.GatewayIntentBits.MessageContent, discord.GatewayIntentBits.GuildMessages],
+    shards: "auto",
+    partials: [discord.Partials.Message, discord.Partials.Channel, discord.Partials.User]
+});
+const rest = new REST({ version: '10' }).setToken(BOT_TOKEN);
 
 //#region Command Handler
 readdirSync('./src/commands').forEach(async file => {
@@ -325,7 +335,7 @@ client.on("guildMemberUpdate", async(oldStatus, newStatus) => {
     }
 });
 
-client.login(config.BOT_TOKEN);
+client.login(BOT_TOKEN);
 //#endregion
 
 //#region RCON Handlers
