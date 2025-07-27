@@ -678,8 +678,22 @@ function SendUnlinkEmbed(dbInfo) {
         { inline: true, name: `Steam Profile`, value: `[${dbInfo.name}](${dbInfo.profile_url})` }
     ]
 
-    let body = { color: config.UNLINK_EMBED_COLOR, thumbnail: dbInfo.picture, description: `**Linked <t:${dbInfo.linked_date}>**\n**Unlinked <t:${unlinkTime}>**`, fields: fields, footer: {text: "Player Unlinked"} };
-    FancyReply(false, body, config.UNLINK_LOGS_CHANNEL);
+   const channel = client.channels.cache.get(config.UNLINK_LOGS_CHANNEL);
+if (!channel) return;
+
+const embed = new discord.EmbedBuilder()
+    .setColor(config.UNLINK_EMBED_COLOR)
+    .setThumbnail(dbInfo.picture)
+    .setDescription(`**Linked <t:${dbInfo.linked_date}>**\n**Unlinked <t:${unlinkTime}>**`)
+    .setFooter({ text: "Player Unlinked" })
+    .setTimestamp()
+    .addFields(fields);
+
+channel.send({ embeds: [embed] }).then(msg => {
+    setTimeout(() => {
+        msg.delete().catch(console.error);
+    }, 10000); // Radera efter 10 sekunder
+});
 }
 
 function SendLinkEmbed(message, steamInfo, time) {
