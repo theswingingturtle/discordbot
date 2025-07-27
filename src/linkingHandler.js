@@ -42,6 +42,11 @@ const rest = new REST({ version: '10' }).setToken(BOT_TOKEN);
 //#region Command Handler
 readdirSync('./src/commands').forEach(async file => {
     const command = require(`./commands/${file}`);
+    console.log("Loading command:", file, "Data present?", !!command.data);
+    if (!command.data) {
+        console.log(`⚠️ Skipping ${file} because command.data is missing`);
+        return;
+    }
     commands.push(command.data.toJSON());
     client.commands.set(command.data.name, command);
 });
