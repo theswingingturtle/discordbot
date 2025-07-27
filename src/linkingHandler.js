@@ -577,7 +577,15 @@ async function LinkUser(steamId, message) {
         let profilePicture = message.author.displayAvatarURL();
         if(profilePicture.includes(".webp")) profilePicture = profilePicture.split(".webp")[0] + ".png";
         const guild = client.guilds.cache.get(config.DISCORD_SERVER_ID);
-        let member = guild.members.cache.get(message.author.id);
+if (!guild) {
+    console.error("❌ Guild not found! Check DISCORD_SERVER_ID.");
+    return message.reply("⚠️ Could not find the Discord server. Please contact an admin.");
+}
+
+let member = guild.members.cache.get(message.author.id);
+if (!member) {
+    return message.reply("⚠️ Could not find you in the Discord server.");
+}
         let alreadyLinked = false;
         let time = (Date.now() / 1000).toString();
         if(time.includes('.')) time = time.split(".")[0];
